@@ -3,45 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NovaLumina Tech AR </title>
+  <title>AR Viewer</title>
 
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <!-- Futuristic font -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  <!-- ARCHIVO FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
     body {
       margin: 0;
-      font-family: 'Orbitron', sans-serif;
-      background: radial-gradient(circle at top, #0a0a0a, #000000);
-      color: white;
-      text-align: center;
+      font-family: 'Archivo', sans-serif;
+      background: #2a2d32;
+      color: #eef6d1;
     }
 
+    /* HEADER (SWAPPED) */
     header {
-      padding: 20px;
-      font-size: 20px;
-      letter-spacing: 2px;
-      color: #a6ff00;
-      text-shadow: 0 0 15px #a6ff00;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 28px;
+      color: #eef6d1;
+    }
+
+    .logo {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px #eef6d1);
     }
 
     .container {
       padding: 10px 20px;
+      text-align: center;
     }
 
+    /* 3D VIEWER */
     model-viewer {
       width: 100%;
       height: 70vh;
       border-radius: 20px;
-      background: #111;
+      background: #1f2226;
       box-shadow:
-        0 0 40px rgba(166,255,0,0.15),
+        0 0 40px rgba(238,246,209,0.08),
         0 0 120px rgba(0,0,0,0.9);
     }
 
-    /* Upload section */
+    /* UPLOAD */
     .upload {
       margin: 20px 0;
     }
@@ -58,61 +72,76 @@
       padding: 14px 22px;
       border-radius: 14px;
 
-      background: black;
-      border: 1px solid #a6ff00;
-      color: #a6ff00;
+      background: #1f2226;
+      border: 1px solid #eef6d1;
+      color: #eef6d1;
 
-      font-weight: 600;
-      font-size: 14px;
+      font-weight: 500;
+      font-size: 16px;
 
       cursor: pointer;
-
-      box-shadow:
-        0 0 20px rgba(166,255,0,0.2),
-        0 0 60px rgba(0,0,0,0.8);
-
       transition: 0.25s ease;
+
+      box-shadow: 0 0 20px rgba(238,246,209,0.1);
     }
 
     .upload-btn:hover {
-      background: #a6ff00;
-      color: black;
+      background: #eef6d1;
+      color: #2a2d32;
       transform: scale(1.05);
-      box-shadow:
-        0 0 25px #a6ff00,
-        0 0 80px rgba(166,255,0,0.5);
     }
 
-    .cta {
-      margin-top: 15px;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-
+    /* AR BUTTON */
     .ar-btn {
       margin-top: 15px;
       display: inline-block;
       padding: 12px 20px;
       border-radius: 12px;
 
-      background: #a6ff00;
-      color: black;
-      font-weight: bold;
+      background: #c8f31d;
+      color: #2a2d32;
+      font-weight: 600;
 
       cursor: pointer;
 
-      box-shadow:
-        0 0 20px #a6ff00,
-        0 0 60px rgba(166,255,0,0.4);
+      box-shadow: 0 0 20px #c8f31d;
 
       transition: 0.2s;
     }
 
     .ar-btn:hover {
       transform: scale(1.05);
-      box-shadow:
-        0 0 30px #a6ff00,
-        0 0 80px rgba(166,255,0,0.6);
+      box-shadow: 0 0 35px #c8f31d;
+    }
+
+    .cta {
+      margin-top: 15px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* POPUP */
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-box {
+      background: #1f2226;
+      border: 1px solid #c8f31d;
+      color: #eef6d1;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
     }
 
   </style>
@@ -120,13 +149,15 @@
 
 <body>
 
+<!-- HEADER (SWAPPED) -->
 <header>
-  ❒ NovaLumina Tech AR Product Viewer
+  <img class="logo" src="logo.png" alt="logo" />
+  <div class="title">AR Viewer</div>
 </header>
 
 <div class="container">
 
-  <!-- Upload -->
+  <!-- UPLOAD -->
   <div class="upload">
     <label for="fileInput" class="upload-btn">
       📁 Upload 3D Model
@@ -134,7 +165,7 @@
     <input type="file" id="fileInput" accept=".glb,.gltf" />
   </div>
 
-  <!-- AR Viewer -->
+  <!-- VIEWER -->
   <model-viewer
     id="viewer"
     src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
@@ -142,40 +173,50 @@
     ar
     ar-modes="scene-viewer quick-look webxr"
     camera-controls
-    auto-rotate
-    shadow-intensity="1">
+    auto-rotate>
   </model-viewer>
 
   <div class="cta">
-    Experience your product in real space
+    Experience products in real space using AR
   </div>
 
+  <!-- AR BUTTON -->
   <div class="ar-btn" id="arButton">
-    👁️ View in Augmented Reality
+    View in AR
   </div>
 
+</div>
+
+<!-- POPUP -->
+<div id="popup" class="popup hidden">
+  <div class="popup-box">
+    📱 Open this on your phone to use AR mode
+  </div>
 </div>
 
 <script>
   const input = document.getElementById("fileInput");
   const viewer = document.getElementById("viewer");
   const arButton = document.getElementById("arButton");
+  const popup = document.getElementById("popup");
 
-  // Load GLB file
   input.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const url = URL.createObjectURL(file);
-    viewer.src = url;
+    viewer.src = URL.createObjectURL(file);
   });
 
-  // Trigger AR mode
+  function isMobile() {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
   arButton.addEventListener("click", () => {
-    if (viewer.activateAR) {
-      viewer.activateAR();
+    if (isMobile()) {
+      viewer.activateAR?.();
     } else {
-      alert("AR not supported on this device/browser");
+      popup.classList.remove("hidden");
+      setTimeout(() => popup.classList.add("hidden"), 2500);
     }
   });
 </script>
