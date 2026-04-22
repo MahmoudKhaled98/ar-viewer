@@ -11,16 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    body {
+    /* REMOVE ALL DEFAULT SPACING */
+    html, body {
       margin: 0;
+      padding: 0;
       font-family: 'Archivo', sans-serif;
       background: #2a2d32;
       color: #eef6d1;
     }
 
-    /* HEADER */
+    /* HEADER - PINNED TO TOP */
     header {
-      padding: 18px 20px;
+      margin: 0;
+      padding: 10px 20px;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -38,15 +42,14 @@
       color: #eef6d1;
     }
 
-    /* FIXED LOGO */
+    /* SVG LOGO */
     .logo {
       width: 300px;
       height: 300px;
       display: block;
       flex-shrink: 0;
-
       background: transparent;
-
+      filter: drop-shadow(0 0 8px #eef6d1);
     }
 
     .container {
@@ -158,10 +161,13 @@
 
 <body>
 
-<!-- HEADER -->
+<!-- HEADER (NOW FULLY TOP ALIGNED) -->
 <header>
   <div class="left">
-    <img class="logo" src="logo.svg" alt="logo" />
+    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="40" stroke="#eef6d1" stroke-width="6" fill="none"/>
+      <circle cx="50" cy="50" r="18" fill="#c8f31d"/>
+    </svg>
   </div>
 
   <div class="title">AR Viewer</div>
