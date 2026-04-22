@@ -29,7 +29,7 @@
     .left {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 14px;
     }
 
     .title {
@@ -38,12 +38,18 @@
       color: #eef6d1;
     }
 
-    /* EXTERNAL SVG LOGO FILE */
+    /* FIXED LOGO */
     .logo {
-      width: 38px;
-      height: 38px;
+      width: 56px;
+      height: 56px;
+      display: block;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 8px #eef6d1);
+
+      background: transparent;
+
+      filter:
+        drop-shadow(0 0 8px #eef6d1)
+        drop-shadow(0 0 20px rgba(200,243,29,0.25));
     }
 
     .container {
