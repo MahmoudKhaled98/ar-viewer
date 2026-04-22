@@ -11,7 +11,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* REMOVE ALL DEFAULT SPACING */
     html, body {
       margin: 0;
       padding: 0;
@@ -20,7 +19,7 @@
       color: #eef6d1;
     }
 
-    /* HEADER - PINNED TO TOP */
+    /* HEADER */
     header {
       margin: 0;
       padding: 10px 20px;
@@ -42,14 +41,21 @@
       color: #eef6d1;
     }
 
-    /* SVG LOGO */
+    /* SVG FILE LOGO FIX */
     .logo {
-      width: 300px;
-      height: 300px;
+      width: 300px;     /* FIXED SIZE */
+      height: 300px;    /* FIXED SIZE */
       display: block;
       flex-shrink: 0;
+
       background: transparent;
-      filter: drop-shadow(0 0 8px #eef6d1);
+      object-fit: contain;
+
+      /* this ensures no “box illusion” */
+      border: none;
+      outline: none;
+      box-shadow: none;
+
     }
 
     .container {
@@ -57,7 +63,6 @@
       text-align: center;
     }
 
-    /* VIEWER */
     model-viewer {
       width: 100%;
       height: 70vh;
@@ -68,7 +73,6 @@
         0 0 120px rgba(0,0,0,0.9);
     }
 
-    /* UPLOAD */
     .upload {
       margin: 20px 0;
     }
@@ -89,13 +93,8 @@
       border: 1px solid #eef6d1;
       color: #eef6d1;
 
-      font-weight: 500;
-      font-size: 16px;
-
       cursor: pointer;
       transition: 0.25s ease;
-
-      box-shadow: 0 0 20px rgba(238,246,209,0.1);
     }
 
     .upload-btn:hover {
@@ -104,7 +103,6 @@
       transform: scale(1.05);
     }
 
-    /* AR BUTTON */
     .ar-btn {
       margin-top: 15px;
       display: inline-block;
@@ -118,12 +116,6 @@
       cursor: pointer;
 
       box-shadow: 0 0 20px #c8f31d;
-      transition: 0.2s;
-    }
-
-    .ar-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 35px #c8f31d;
     }
 
     .cta {
@@ -132,7 +124,6 @@
       opacity: 0.8;
     }
 
-    /* POPUP */
     .popup {
       position: fixed;
       inset: 0;
@@ -145,7 +136,6 @@
     .popup-box {
       background: #1f2226;
       border: 1px solid #c8f31d;
-      color: #eef6d1;
       padding: 20px;
       border-radius: 12px;
       max-width: 300px;
@@ -155,19 +145,15 @@
     .hidden {
       display: none;
     }
-
   </style>
 </head>
 
 <body>
 
-<!-- HEADER (NOW FULLY TOP ALIGNED) -->
 <header>
   <div class="left">
-    <svg class="logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="50" r="40" stroke="#eef6d1" stroke-width="6" fill="none"/>
-      <circle cx="50" cy="50" r="18" fill="#c8f31d"/>
-    </svg>
+    <!-- REAL SVG FILE -->
+    <img class="logo" src="logo.svg" alt="logo" />
   </div>
 
   <div class="title">AR Viewer</div>
@@ -175,7 +161,6 @@
 
 <div class="container">
 
-  <!-- UPLOAD -->
   <div class="upload">
     <label for="fileInput" class="upload-btn">
       📁 Upload 3D Model
@@ -183,7 +168,6 @@
     <input type="file" id="fileInput" accept=".glb,.gltf" />
   </div>
 
-  <!-- VIEWER -->
   <model-viewer
     id="viewer"
     src="https://modelviewer.dev/shared-assets/models/Astronaut.glb"
@@ -198,14 +182,12 @@
     Experience products in real space using AR
   </div>
 
-  <!-- AR BUTTON -->
   <div class="ar-btn" id="arButton">
     View in AR
   </div>
 
 </div>
 
-<!-- POPUP -->
 <div id="popup" class="popup hidden">
   <div class="popup-box">
     📱 Open this on your phone to use AR mode
