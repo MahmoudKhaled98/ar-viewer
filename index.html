@@ -7,7 +7,6 @@
 
   <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 
-  <!-- ARCHIVO FONT -->
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -19,47 +18,19 @@
       color: #eef6d1;
     }
 
-    /* HEADER */
     header {
-      margin: 0;
       padding: 10px 20px;
-
       display: flex;
-      align-items: center;
       justify-content: space-between;
     }
 
-    .left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
     .title {
+      font-size: 24px;
       font-weight: 600;
-      font-size: 28px;
-      color: #eef6d1;
-    }
-
-    /* SVG FILE LOGO FIX */
-    .logo {
-      width: 300px;     /* FIXED SIZE */
-      height: 300px;    /* FIXED SIZE */
-      display: block;
-      flex-shrink: 0;
-
-      background: transparent;
-      object-fit: contain;
-
-      /* this ensures no “box illusion” */
-      border: none;
-      outline: none;
-      box-shadow: none;
-
     }
 
     .container {
-      padding: 10px 20px;
+      padding: 20px;
       text-align: center;
     }
 
@@ -68,82 +39,48 @@
       height: 70vh;
       border-radius: 20px;
       background: #1f2226;
-      box-shadow:
-        0 0 40px rgba(238,246,209,0.08),
-        0 0 120px rgba(0,0,0,0.9);
-    }
-
-    .upload {
-      margin: 20px 0;
-    }
-
-    #fileInput {
-      display: none;
     }
 
     .upload-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-
-      padding: 14px 22px;
-      border-radius: 14px;
-
+      display: inline-block;
+      margin-top: 10px;
+      padding: 12px 18px;
+      border-radius: 12px;
       background: #1f2226;
       border: 1px solid #eef6d1;
       color: #eef6d1;
-
       cursor: pointer;
-      transition: 0.25s ease;
     }
 
     .upload-btn:hover {
       background: #eef6d1;
       color: #2a2d32;
-      transform: scale(1.05);
+    }
+
+    input {
+      display: none;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      opacity: 0;
+      transition: 0.3s ease;
+    }
+
+    .hint.show {
+      opacity: 0.8;
     }
 
     .ar-btn {
       margin-top: 15px;
-      display: inline-block;
       padding: 12px 20px;
-      border-radius: 12px;
-
       background: #c8f31d;
       color: #2a2d32;
-      font-weight: 600;
-
-      cursor: pointer;
-
-      box-shadow: 0 0 20px #c8f31d;
-    }
-
-    .cta {
-      margin-top: 15px;
-      font-size: 14px;
-      opacity: 0.8;
-    }
-
-    .popup {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .popup-box {
-      background: #1f2226;
-      border: 1px solid #c8f31d;
-      padding: 20px;
       border-radius: 12px;
-      max-width: 300px;
-      text-align: center;
-    }
-
-    .hidden {
-      display: none;
+      cursor: pointer;
+      font-weight: 600;
+      display: inline-block;
     }
   </style>
 </head>
@@ -151,22 +88,20 @@
 <body>
 
 <header>
-  <div class="left">
-    <!-- REAL SVG FILE -->
-    <img class="logo" src="logo.svg" alt="logo" />
-  </div>
-
   <div class="title">AR Viewer</div>
 </header>
 
 <div class="container">
 
-  <div class="upload">
-    <label for="fileInput" class="upload-btn">
-      📁 Upload 3D Model
-    </label>
-    <input type="file" id="fileInput" accept=".glb,.gltf" />
-  </div>
+  <!-- SINGLE UPLOAD BUTTON -->
+  <label class="upload-btn" for="fileInput" id="uploadBtn">
+    📁 Upload 3D Model
+  </label>
+
+  <input type="file" id="fileInput" accept=".glb,.gltf,.usdz" />
+
+  <!-- HINT (hidden until click) -->
+  <div class="hint" id="hintText"></div>
 
   <model-viewer
     id="viewer"
@@ -178,45 +113,59 @@
     auto-rotate>
   </model-viewer>
 
-  <div class="cta">
-    Experience products in real space using AR
-  </div>
-
   <div class="ar-btn" id="arButton">
     View in AR
   </div>
 
 </div>
 
-<div id="popup" class="popup hidden">
-  <div class="popup-box">
-    📱 Open this on your phone to use AR mode
-  </div>
-</div>
-
 <script>
-  const input = document.getElementById("fileInput");
+  const fileInput = document.getElementById("fileInput");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const hintText = document.getElementById("hintText");
   const viewer = document.getElementById("viewer");
-  const arButton = document.getElementById("arButton");
-  const popup = document.getElementById("popup");
 
-  input.addEventListener("change", (event) => {
+  function isIOS() {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
+  function isAndroid() {
+    return /Android/i.test(navigator.userAgent);
+  }
+
+  // SHOW HINT ONLY AFTER CLICK
+  uploadBtn.addEventListener("click", () => {
+    if (isIOS()) {
+      hintText.textContent = "📱 iPhone detected → upload .USDZ for AR";
+    } else if (isAndroid()) {
+      hintText.textContent = "🤖 Android detected → upload .GLB / .GLTF";
+    } else {
+      hintText.textContent = "💻 Use .GLB/.GLTF for preview, .USDZ for iOS AR";
+    }
+
+    hintText.classList.add("show");
+  });
+
+  // FILE HANDLING
+  fileInput.addEventListener("change", (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
-    viewer.src = URL.createObjectURL(file);
+    const ext = file.name.split(".").pop().toLowerCase();
+
+    if (ext === "usdz") {
+      viewer.setAttribute("ios-src", URL.createObjectURL(file));
+    } else {
+      viewer.src = URL.createObjectURL(file);
+    }
   });
 
-  function isMobile() {
-    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
-
-  arButton.addEventListener("click", () => {
-    if (isMobile()) {
+  // AR BUTTON
+  document.getElementById("arButton").addEventListener("click", () => {
+    if (/iPhone|iPad|Android/i.test(navigator.userAgent)) {
       viewer.activateAR?.();
     } else {
-      popup.classList.remove("hidden");
-      setTimeout(() => popup.classList.add("hidden"), 2500);
+      alert("Open on mobile for AR experience");
     }
   });
 </script>
